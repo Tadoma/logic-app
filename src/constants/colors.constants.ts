@@ -1,0 +1,9 @@
+export const BACKGROUND_COLOR = '#7446EE';
+export const WHITE_COLOR = '#FFFFFF';
+export const SHADOW_BLUE_COLOR = '#E5E8FE';
+export const GREY_COLOR = '#5A5776';
+export const GREY_COLOR_COLOR_2 = '#39414B';
+export const LIGHT_GREY_COLOR = '#A3B3D0';
+export const LIGHT_GREY_COLOR_2 = '#C5D0E6';
+export const GREEN_COLOR = '#5CBB73';
+export const OPACITY_20_COLOR = 'rgba(0,0,0,0.2)';
