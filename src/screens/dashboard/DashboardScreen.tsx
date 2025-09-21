@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo, useRef } from 'react';
+import { FC, memo, useCallback, useRef } from 'react';
 import {
     ActivityIndicator,
     FlatList,
@@ -46,51 +46,44 @@ const DashboardScreen: FC = () => {
         [navigation, routeParams?.selectedTheme, tags],
     );
 
-    const content = useMemo(() => {
+    const renderEmptyComponent = useCallback(() => {
         if (isLoading) {
             return <ActivityIndicator size="large" color={GREEN_COLOR} />;
         }
-
         if (error) {
-            return <Text style={styles.text}>error</Text>;
+            return <Text style={styles.text}>{error}</Text>;
         }
 
-        return (
-            <>
+        return <Text style={styles.text}>Тут пусто...</Text>;
+    }, [error, isLoading]);
+
+    return (
+        <View style={styles.container}>
+            {!isLoading && !error && (
                 <DashboardThemesButton
                     selectedTheme={routeParams?.selectedTheme}
                     onPress={handleThemesPress}
                 />
-                <FlatList
-                    ref={flatListRef}
-                    horizontal
-                    removeClippedSubviews
-                    contentContainerStyle={styles.list}
-                    keyExtractor={item => item.id}
-                    data={courses}
-                    renderItem={renderItem}
-                    onContentSizeChange={() =>
-                        flatListRef.current?.scrollToIndex({
-                            index: 0,
-                            animated: true,
-                        })
-                    }
-                    ListEmptyComponent={
-                        <Text style={styles.text}>Тут пусто...</Text>
-                    }
-                />
-            </>
-        );
-    }, [
-        courses,
-        error,
-        handleThemesPress,
-        isLoading,
-        renderItem,
-        routeParams?.selectedTheme,
-    ]);
-
-    return <View style={styles.container}>{content}</View>;
+            )}
+            <FlatList
+                ref={flatListRef}
+                horizontal
+                removeClippedSubviews
+                contentContainerStyle={styles.list}
+                keyExtractor={item => item.id}
+                data={courses}
+                renderItem={renderItem}
+                onContentSizeChange={() =>
+                    courses.length &&
+                    flatListRef.current?.scrollToIndex({
+                        index: 0,
+                        animated: true,
+                    })
+                }
+                ListEmptyComponent={renderEmptyComponent}
+            />
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
